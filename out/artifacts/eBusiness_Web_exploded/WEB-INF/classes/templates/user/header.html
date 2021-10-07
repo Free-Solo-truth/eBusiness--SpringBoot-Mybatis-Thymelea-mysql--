@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>导航页</title>
+<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link rel="shortcut icon" href="images/favicon.ico" >
+	<link rel="shortcut icon" href="logo.ico" />
+	<link rel="stylesheet" href="css/index.css">
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<style type="text/css">
+     .carousel{
+		 font-weight: 1000;
+         height: 360px;
+         background-color: #000;
+      }
+      .carousel .item{
+		  height: 360px;
+         background-color: #000;
+      }
+      .carousel img{
+		  margin-top: 32px;
+		  min-width:1651.3px;
+         width: auto;
+		  height: auto;
+      }
+	 .right-box{
+		 position: fixed;
+		 z-index: 1001;
+		 width: 80px;
+		 /* padding: 0 4px; */
+		 top:50%;
+		 height: 100%;
+		 align-items:center;
+
+		 border: 2px #3c3c3c;
+		 opacity:0.8;
+		 left: 8%;
+		 margin-top: 30px;
+		 text-align: center;
+		 background-color: white;
+		 color: #0f0f0f;
+		 word-wrap: break-word;
+	 }
+
+	 .right-box a{
+		 font-family: 微软雅黑;
+		 color: #0f0f0f;
+		 padding: 6px 0;
+		 display: block;
+		 /* line-height: 20px; */
+		 color: seashell;
+		 height: 40px;
+		 /* 去掉文字点击的下划线 */
+		 text-decoration: none;
+	 }
+	 .right-box a:hover{
+		 background-color: sienna;
+	 }
+	.logo{
+		float: left;
+		height: 52px;
+		width:100px ;
+		border-radius: 30%;
+	}
+	 .logotest {
+		 display: block;
+		 border-radius: 50%;
+		 background-position: center center;
+		 width: 100%;
+		 height: 100%;
+		 text-indent: -9999px;
+		 /* 将其中的文字隐藏掉 */
+		 overflow: hidden;
+	 }
+	.textset{
+		background-color: white;
+		font-size: 15px;
+		font-weight: 500;
+	}
+
+</style>
+</head>
+<body style="background-color: #f1f1f1" >
+	<div class="container-fruid" >
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation"
+			style="padding-left: 30px;">
+			<div class="navbar-header">
+				<span class="navbar-brand">欢迎光临京西</span>
+			</div>
+			<div class="navbar-header logo">
+				<a class="navbar-brand logotest " title="京西商城">
+					<img    style="margin-top:-20px;max-width:80px;max-height: 80px" src="images/R-C.jpg">
+				</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a th:href="@{user/toRegister}">注册</a></li>
+				<li>
+					<a th:href="(${session.bUser} == null)?'user/toLogin':'#'" >
+						<span th:if="${session.bUser} == null" >
+							登录
+						</span>
+						<span th:if="${session.bUser} != null" >
+							欢迎<span th:text="${session.bUser.bemail}" ></span>
+						</span>
+					</a>
+				</li>
+				<li><a th:href="@{admin/toLogin}">后台</a></li>
+			</ul>
+			<ul class="nav navbar-nav" style="margin-left: 100px">
+			<form action="search" class="navbar-form navbar-right "
+				  style="padding-right: 50px;">
+				<div class="form-group" style="width: 300px;border-color: #ac2925">
+					<input  style="width: 300px" type="text" class="form-control" name="mykey" placeholder="请输入关键词" />
+				</div>
+				<button type="submit" class="btn btn-default">搜索</button>
+			</form>
+			</ul>
+			<ul class="nav navbar-nav navbar-right text-set" style="padding-right: 30px;">
+				<li><a href="cart/userInfo">个人信息</a></li>
+				<li><a href="cart/selectCart">我的购物车</a></li>
+				<li><a href="cart/myFocus">我的收藏</a></li>
+				<li><a href="cart/myOder">我的订单</a></li>
+				<li class="dropdown"><a href="##" data-toggle="dropdown"
+					class="dropdown-toggle">关于我们<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="##">联系我们</a></li>
+						<li><a href="##">投诉建议</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<!-- ************************************************** -->
+		<div id="carousel-example-generic" class="carousel slide"
+			data-ride="carousel" style="margin-top: 20px;">
+			<!-- Indicators 小圆圈-->
+			<ol class="carousel-indicators">
+				<li data-target="#carousel-example-generic" 
+				th:each="advertise,adstat:${advertisementGoods}" 
+				th:data-slide-to="${adstat.index}"
+				th:class="(${adstat.index}==0)? 'active' : ''"></li>
+			</ol>
+			<!-- 滚动广告图片 -->
+			<div class="carousel-inner" role="listbox">
+<!--	使用th:each进行遍历  使用advertise返回遍历的结果		-->
+				<div th:each="advertise,adstat:${advertisementGoods}" th:class="(${adstat.index}==0)? 'item active' : 'item'">
+					<img th:src="'images/' + ${advertise.advisepicture}" th:alt="${adstat.index + 1}">
+					<div class="carousel-caption"><span th:text="${advertise.gname}"></span></div>
+				</div>
+			</div>
+			<!-- Controls -->
+			<a class="left carousel-control" href="#carousel-example-generic"
+				role="button" data-slide="prev"> <span
+				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a> <a class="right carousel-control" href="#carousel-example-generic"
+				role="button" data-slide="next"> <span
+				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
+		<!-- *************************************** -->
+		<div class="navbar navbar-default " role="navigation">
+			<ul class="nav navbar-nav" style="padding-left: 50px;">
+				<li><a th:href="@{/}">首页</a></li>
+				<li th:each="gty:${goodsType}"><a th:href="'?tid=' + ${gty.id}"><span th:text="${gty.typename}"></span></a></li>
+
+			</ul>
+
+		</div>
+	</div>
+	<div class="right-box" style="color: white;">
+		<li th:each="gty:${goodsType}" class="textset"><a th:href="'#IDE' +${gty.id}" style="color: #0f0f0f"  th:id="'turnchange'+${gty.id}"   onclick="turnPagebyScroll(id)" ><span th:text="${gty.typename}"></span></a></li>
+	</div>
+<script type="text/javascript" >
+
+	//滚动页面的实现
+	// document.querySelector("#turnchange9").onclick = function () {
+	// 	document.querySelector("#ID9").scrollIntoView(true);
+	// }
+
+				function turnPagebyScroll(tests) {
+					var testchange = tests.substring(10)
+					var y = document.getElementById("ID"+testchange).offsetTop-60;//获取所要到达控件距离网页顶部的距离
+
+					document.getElementById("turnchange9").innerHTML = testchange;
+
+					var duration = 100;//设计滚动所需的总共的时间
+					var scrollTop = document.documentElement.scrollTop;/*页面当前滚动距离*/
+					// document.getElementById("turnchange9").innerHTML = document.documentElement.scrollTop ;
+					var distance = y - scrollTop;/*结果大于0,说明目标在下方,小于0,说明目标在上方*/
+					var scrollCount = duration / 10;/*10毫秒滚动一次,计算滚动次数*/
+					var everyDistance = distance / scrollCount/*滚动距离除以动次数滚计算每次滚动距离*/
+					for (var index = 1; index <= scrollCount; index++) /*循环设置scrollBy事件,在duration之内,完成滚动效果*/
+						setTimeout(function () {
+							window.scrollBy(0, everyDistance)
+						}, 10 * index);
+	}
+
+	// document.getElementById('IDE10').onclick=
+	// 		function(){
+	// 			var y = 200;
+	// 			var duration = 500;
+	// 			// 获取当前的页面的位置
+	// 			var scrollTop = document.body.scrollTop;
+	// 			// 设置需要滚动的距离
+	// 			var distance = y - scrollTop;
+	// 			// 计算需要滚动的次数
+	// 			var scrollCount = duration / 10;
+	// 			//计算每次滚动的距离
+	// 			var everyDistance = distance / scrollCount;
+	// 			for (var index = 1; index <= scrollCount; index++)
+	// 				setTimeout(function () { window.scrollBy(0, everyDistance)},10*index);
+	// 		}
+
+
+	// function scrollTo(y, duration) {
+	// 　/*y:目标纵坐标,duration:时间(毫秒)*/
+	// 　　var scrollTop = document.body.scrollTop;/*页面当前滚动距离*/
+	//     var distance = y - scrollTop;/*结果大于0,说明目标在下方,小于0,说明目标在上方*/
+	//     var scrollCount = duration / 10;/*10毫秒滚动一次,计算滚动次数*/
+	//     var everyDistance = distance / scrollCount/*滚动距离除以滚动次数计算每次滚动距离*/
+	//     for (var index = 1; index <= scrollCount; index++) /*循环设置scrollBy事件,在duration之内,完成滚动效果*/
+	//     　　setTimeout(function () { window.scrollBy(0, everyDistance) }, 10 * index);
+	// }
+
+
+</script>
+</body>
+</html>

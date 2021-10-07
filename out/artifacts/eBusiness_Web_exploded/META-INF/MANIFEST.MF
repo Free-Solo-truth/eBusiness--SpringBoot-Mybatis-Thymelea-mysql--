@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: 李腾飞
+Build-Jdk: 1.8.0_242
+Implementation-Title: eBusiness
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.ch
+Main-Class: ${start-class}
+
